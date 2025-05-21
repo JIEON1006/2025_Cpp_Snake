@@ -21,3 +21,7 @@ char mapping(int num){
 }
 
 // 과제 : 블럭 클래스를 작성, 특징에 맞는 전역 멤버 함수 설정
+Class Block{
+    public:
+    
+}
