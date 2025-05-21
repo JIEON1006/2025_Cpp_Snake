@@ -5,6 +5,7 @@
 #include <ncurses.h>
 using namespace std;
 
+// 숫자 -> 문자 변환 함수수
 char mapping(int num){
     switch(num) {
         case 0: return '■';     // 0 : snake가 자유롭게 이동가능한 공백 블럭
@@ -18,3 +19,5 @@ char mapping(int num){
         // ... 기타 블럭 추가 가능 
     }
 }
+
+// 과제 : 블럭 클래스를 작성, 특징에 맞는 전역 멤버 함수 설정
