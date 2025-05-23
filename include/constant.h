@@ -5,23 +5,40 @@
 #include <ncurses.h>
 using namespace std;
 
-// 숫자 -> 문자 변환 함수수
-char mapping(int num){
-    switch(num) {
-        case 0: return '■';     // 0 : snake가 자유롭게 이동가능한 공백 블럭
-        case 1: return '■';     // 1 : 그냥 벽
-        case 2: return '■';     // 2 : 모서리 벽
-        case 3: return '■';     // 3 : snake의 머리
-        case 4: return '■';     // 4 : snake의 몸통
-        case 5: return '■';     // 5 : gate 블럭
-        case 6: return '■';     // 6 : plus 아이템
-        case 7: return '■';     // 7 : minus 아이템 
-        // ... 기타 블럭 추가 가능 
-    }
-}
+/*
+0 : snake가 자유롭게 이동가능한 공백 블럭
+1 : 그냥 벽 - gate 블럭으로 변환 가능
+2 : 모서리 벽 - gate 블럭으로 변환 불가 
+3 : snake의 머리        //2단계 구현 사항
+4 : snake의 몸통        //2단계 구현 사항
+5 : gate 블럭           //3단계 구현 사항
+6 : plus 아이템         //4단계 구현 사항
+7 : minus 아이템        //4단계 구현 사항
+*/
 
 // 과제 : 블럭 클래스를 작성, 특징에 맞는 전역 멤버 함수 설정
-Class Block{
+class Block{
     public:
-    
+        int type;         // 블럭의 타입
+        int colorPair;    // 블럭 색상 쌍 번호
+        int x, y;         // 블럭의 위치 좌표 
+        char print(){
+            return "■";
+        }
+};
+
+// Block type을 상속받기
+class blankBlock : public Block{
+    public:
+    type = 0;
+}
+
+class wallBlock : public Block{
+    public:
+    type = 1;
+}
+
+class NonGateWallBlock : public Block{
+    public:
+    type = 2;
 }
