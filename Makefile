@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -std=c++17 -Iinclude -lncurses
 
 # 파일 정의
 TARGET = snake_game
-SRC = main.cpp map/map.cpp
+SRC = main.cpp map/map.cpp include/start_screen.cpp
 OBJ = $(SRC:.cpp=.o)
 
 # 기본 규칙
