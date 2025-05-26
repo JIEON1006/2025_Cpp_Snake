@@ -14,31 +14,45 @@ using namespace std;
 5 : gate 블럭           //3단계 구현 사항
 6 : plus 아이템         //4단계 구현 사항
 7 : minus 아이템        //4단계 구현 사항
+8 : 배속 아이템
+9 : snake 크기 두배 아이템템
 */
 
 // 과제 : 블럭 클래스를 작성, 특징에 맞는 전역 멤버 함수 설정
 class Block{
-    public:
-        int type;         // 블럭의 타입
-        int colorPair;    // 블럭 색상 쌍 번호
-        int x, y;         // 블럭의 위치 좌표 
-        char print(){
-            return "■";
-        }
+public:
+    int type;         // 블럭의 타입
+    int colorPair;    // 블럭 색상 쌍 번호
+    int x, y;         // 블럭의 위치 좌표 
+    string name;
+    Block() : name(""), type(0) {}      //생성자
+    virtual ~Block()        //소멸자 
 };
 
 // Block type을 상속받기
 class blankBlock : public Block{
-    public:
+public:
     type = 0;
+    blankBlock(const string& name_) : name(name_) {}    //초기화
+    char print(){
+        return "□";
+    }
 }
 
 class wallBlock : public Block{
-    public:
+public:
     type = 1;
+    wallBlock(const string& name_) : name(name_) {}
+    char print(){
+        return "■";
+    }
 }
 
 class NonGateWallBlock : public Block{
-    public:
+public:
     type = 2;
+    NonGateWallBlock(const string& name_) : name(name_) {}
+    char print(){
+        return "◆";
+    }
 }

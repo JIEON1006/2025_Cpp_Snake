@@ -1,9 +1,14 @@
 #pragma once
 
+#include "constant.h"
+
 class Map {
-    
 public:
-    void test(); // 테스트용 출력 함수
+    /// Map 클래스의 구성 요소 
+    int row, col;
+    vector<vector<Block*>> mapArray[row][col];   //Block으로 채워진 map array
+    void printMap(); 
 };
 
-void mapping(int num=0, int x=0, int y=0);
+vector<vector<Block*>> createBlockMatrix(const vector<vector<int>>& intMatrix);
+void destroyBlockMatrix(vector<vector<Block*>>& matrix);
