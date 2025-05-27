@@ -5,7 +5,7 @@
 ## 📁 프로젝트 구조
 
 ```bash
-SnakeGame/
+SnakeGame/o
 ├── main.cpp # 프로그램 시작점
 ├── include/
 │ ├── block.h # Block 클래스 및 서브클래스 정의
@@ -16,7 +16,9 @@ SnakeGame/
 ├── map.txt # 정수형 맵 정의 파일
 ├── Makefile # 빌드 스크립트
 └── README.md # 프로젝트 설명
-'''
+
+...```
+
 ---
 
 
