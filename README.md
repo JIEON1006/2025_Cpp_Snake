@@ -2,6 +2,7 @@
 
 
 ## 📁 프로젝트 구조
+---
 SnakeGame/
 ├── main.cpp # 프로그램 시작점
 ├── include/
@@ -13,6 +14,7 @@ SnakeGame/
 ├── map.txt # 정수형 맵 정의 파일
 ├── Makefile # 빌드 스크립트
 └── README.md # 프로젝트 설명
+---
 
 
 ##🧩 코드 흐름 요약
