@@ -1,8 +1,10 @@
 # 2025_Cpp_Snake
 
+---
 
 ## 📁 프로젝트 구조
----
+
+```bash
 SnakeGame/
 ├── main.cpp # 프로그램 시작점
 ├── include/
@@ -18,6 +20,7 @@ SnakeGame/
 
 
 ##🧩 코드 흐름 요약
+---
 main() 함수에서 Map 객체 생성
 
 map.txt 로드 → 정수 맵 map[][] 생성 -> `Block` 객체로 변환 (createBlockMatrix()로 Block*[][] 생성 (mapArray))
@@ -25,7 +28,7 @@ map.txt 로드 → 정수 맵 map[][] 생성 -> `Block` 객체로 변환 (create
 printMap() 또는 printColoredMap()으로 출력
 
 printBlockAt() 내부에서 ncurses의 mvprintw() 사용
-
+---
 
 
 ## 🔨 빌드 방법
