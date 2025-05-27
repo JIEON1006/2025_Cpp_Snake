@@ -16,6 +16,7 @@ SnakeGame/
 ├── map.txt # 정수형 맵 정의 파일
 ├── Makefile # 빌드 스크립트
 └── README.md # 프로젝트 설명
+'''
 ---
 
 
