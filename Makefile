@@ -8,7 +8,7 @@ OBJ = $(SRC:.cpp=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS) -lncursesw
+	$(CXX) -o $@ $^ $(CXXFLAGS) -lncurses
 
 %.o: %.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
