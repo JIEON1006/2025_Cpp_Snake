@@ -1,8 +1,8 @@
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -Iinclude
+CXXFLAGS = -Wall -std=c++17 -Iinclude -Imap
 
 TARGET = snake_game
-SRC = main.cpp map/map.cpp include/start_screen.cpp
+SRC = main.cpp map/map.cpp include/start_screen.cpp include/block.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(TARGET)

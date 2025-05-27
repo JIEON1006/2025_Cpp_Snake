@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <ncurses.h>
 using namespace std;
 
@@ -59,3 +60,9 @@ public:
         return FILL_DIAMOND;
     }
 };
+
+// 좌표를 입력받아 해당 좌표의 Block 출력
+void printBlockAt(int x, int y, const std::vector<std::vector<Block*>>& mapArray);
+
+// 좌표와 색깔을 입력받아 해당 좌표의 Block 출력
+void printColoredBlock(int x, int y, const std::vector<std::vector<Block*>>& mapArray,int colorPair);

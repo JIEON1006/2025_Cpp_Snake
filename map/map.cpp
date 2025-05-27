@@ -1,3 +1,4 @@
+#include "block.h"
 #include "map.h"
 #include <ncurses.h>
 #include <fstream>
@@ -69,32 +70,10 @@ void Map::loadFromFile(const std::string& filename) { //map.txt를 읽어와서 
     }
 }
 
-void Map::printBlockAt(int x, int y) { //좌표를 입력받아 블록 단위로 출력하는 함수
-    int startY = (LINES - row) / 2;
-    int startX = (COLS - col * 2) / 2;
-    if (x >= 0 && x < row && y >= 0 && y < col && mapArray[x][y]) {
-        mvprintw(startY + x, startX + y * 2, mapArray[x][y]->print());
-    }
-}
-
-void Map::printColoredBlock(int x, int y, int colorPair) { //좌표와 색을 입력받아 블록 단위로 출력하는 함수
-    int startY = (LINES - row) / 2;
-    int startX = (COLS -col * 2) / 2;
-
-    if (x < 0 || x >= row || y < 0 || y >= col || mapArray[x][y] == NULL)
-        return;
-
-    //const char* symbol = mapArray[x][y]->print();
-
-    attron(COLOR_PAIR(colorPair));
-    mvprintw(startY + x, startX + y * 2, "%s", mapArray[x][y]->print());
-    attroff(COLOR_PAIR(colorPair));
-}
-
 void Map::printMap() { //for문을 돌며 블록 단위로 맵 출력
     for (int i = 0; i < row; ++i) {
         for (int j = 0; j < col; ++j) {
-            printBlockAt(i, j);
+            printBlockAt(i, j, mapArray);
         }
     }
     refresh();
@@ -117,7 +96,7 @@ void Map::printColoredMap() { //for문을 돌며 블록 단위로 맵 출력 -> 
                 default:              colorPair = 1; break;  // EMPTY, 기타 값
             }
 
-            printColoredBlock(i, j, colorPair);
+            printColoredBlock(i, j, mapArray, colorPair);
         }
     }
     refresh();

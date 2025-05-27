@@ -1,6 +1,7 @@
 #include <ncurses.h>
-#include "map/map.h"
+#include "map.h"
 #include "include/start_screen.h"
+#include "include/block.h"
 #include <locale.h>
 
 int main() {

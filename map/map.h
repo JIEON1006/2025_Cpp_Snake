@@ -1,6 +1,6 @@
 #pragma once
 
-#include "constant.h"
+#include "block.h"
 #include <vector>
 #include <string>
 
@@ -31,8 +31,6 @@ public:
     void initMap();                                     // 공백과 벽으로 초기화된 기본 맵 생성
     void loadFromFile(const std::string& filename);     // map.txt로부터 맵 로딩
 
-    void printBlockAt(int x, int y);                     // 해당 좌표의 Block 출력
-    void printColoredBlock(int x, int y, int colorPair); // 색깔과 좌표를 입력받아 블록 출력
     void printMap();                                     // 전체 맵 출력 (색상 없음)
     void printColoredMap();                              // 전체 맵 출력 (색상 있음)
 };
