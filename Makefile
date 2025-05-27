@@ -1,21 +1,17 @@
-# 컴파일러 및 옵션
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -Iinclude -lncurses
+CXXFLAGS = -Wall -std=c++17 -Iinclude
 
-# 파일 정의
 TARGET = snake_game
-SRC = main.cpp map/map.cpp
+SRC = main.cpp map/map.cpp include/start_screen.cpp
 OBJ = $(SRC:.cpp=.o)
 
-# 기본 규칙
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) -lncursesw
 
 %.o: %.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-# 정리
 clean:
 	rm -f $(OBJ) $(TARGET)
