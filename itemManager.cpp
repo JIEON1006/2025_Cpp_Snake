@@ -3,9 +3,9 @@
 #include <string>
 #include "snake.h" //제작 예정
 #include "item.h" // 제작 예정
-#include "itemManager.h" // 제작 예정정
+#include "itemManager.h" // 제작 예정
 
-// extern mapmanager *mapmanager <-mapmanager 제작 필요요
+// extern mapmanager *mapmanager <-mapmanager 제작 필요
 
 
 
@@ -113,7 +113,7 @@ void itemManager::PositionItem(std::string check, float eTime)
 // 맵에 반영
 void itemManager::PushData()
 {
-    for (int32 i = 0; i < data.size(); i++)
+    for (intnn i = 0; i < data.size(); i++) // map size 확인필요
     {
         if (data[i].type == "fruit")
             mapManager->PatchData(data[i].position.y, data[i].position.x, '6');
