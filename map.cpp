@@ -16,8 +16,8 @@ enum MapElement {
     GATE = 5
     GROWTH_ITEM = 6,
     MINUS_ITEM = 7, // 변수명 minus로 할지 poison으로 할지 말씀드리기
-    SPEED_UP = 8,
-    DOUBLE_UO = 9,
+    SPEEDUP_ITEM = 8,
+    DOUBLEUP_ITEM = 9,
 };
 
 // 2차원 map 배열 정의
