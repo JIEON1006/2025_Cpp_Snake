@@ -71,11 +71,11 @@ int main() {
 
             // 꼬리 자취 지우고 blankBlock 할당
             delete gameMap[tailEnd.first][tailEnd.second];
-            gameMap[tailEnd.first][tailEnd.second] = new blankBlock();
+            gameMap[tailEnd.first][tailEnd.second] = new blankBlock("Blank");
         }
         // 이전 머리 자리는 꼬리로 바꾸기
         delete gameMap[head.x][head.y];
-        gameMap[head.x][head.y] = new snakeTail();
+        gameMap[head.x][head.y] = new snakeTail("Tail");
         
         head.x = newX;          // 머리 이동
         head.y = newY;
