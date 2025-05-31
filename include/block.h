@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 #include <ncurses.h>
-#include <deque>
+#include <ncursesw/ncurses.h>  // 꼭 ncursesw 사용해야 mvaddwstr 사용 가능!
+
 using namespace std;
 
 #define BLANK_BLOCK   "□"
@@ -17,12 +18,13 @@ class Block {
 public:
     int type;
     int colorPair;
+    int x, y;
     string name;
 
     Block() : type(0), colorPair(0), x(0), y(0), name("") {}
     virtual ~Block() {}
 
-    virtual const char* print() const = 0;  // 포인터 X
+    virtual const char* print() const = 0;
 };
 
 class blankBlock : public Block {
@@ -58,30 +60,6 @@ public:
 
     const char* print() const override {
         return FILL_DIAMOND;
-    }
-};
-
-class snakeHead : public Block {
-public:
-    int x, y;
-    snakeHead(const string& name_, int x, int y) : x(x), y(y) {
-        this->type = 3;
-        this->name = name_;
-    }
-    const char* print() const override {
-        return FILL_BLOCK;
-    }
-};
-
-class snakeTail : public Block {
-public:
-    int x, y;
-    snakeTail(const string& name_, int x, int y) : x(x), y(y) {
-        this->type = 4;
-        this->name = name_;
-    }
-    const char* print() const override {
-        return FILL_BLOCK;
     }
 };
 
