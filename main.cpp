@@ -1,6 +1,6 @@
 #include "map/map.h"
-#include "include/start_screen.h"
-#include "include/block.h"
+#include "start_screen.h"
+#include "block.h"
 #include <locale.h>
 #include <deque>
 #include <utility>
