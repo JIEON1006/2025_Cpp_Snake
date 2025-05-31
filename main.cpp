@@ -1,6 +1,7 @@
 #include "map/map.h"
 #include "start_screen.h"
 #include "block.h"
+#include "snake_manager.h"
 #include <locale.h>
 #include <deque>
 #include <utility>
@@ -36,66 +37,27 @@ int main() {
     gameMap.printColoredMap(); 
     getch();
 
+    Snake snake;
+    initSnake(snake, gameMap);
+
     int ch;
-    int x = gameMap.row, y = gameMap.col;
-
-    delete gameMap.mapArray[x/2][y/2];
-    snakeHead* head = new snakeHead("head", x/2, y/2);
-    gameMap.mapArray[x/2][y/2] = head;
-
-    deque<pair<int, int>> tails;
-    int tailLength = 3;
-
-    tails.push_back({head->x + 1, head->y});
-    tails.push_back({head->x + 2, head->y});
-
-    while (ch = getch()) {
-        int newX = (head->x);
-        int newY = (head->y);
-
+    while ((ch = getch())) {
+        int dx = 0, dy = 0;
         switch (ch) {
-            case 'w': newX--; break;
-            case 's': newX++; break;
-            case 'a': newY--; break;
-            case 'd': newY++; break;
+            case 'w': dx = -1; break;
+            case 's': dx = 1;  break;
+            case 'a': dy = -1; break;
+            case 'd': dy = 1;  break;
             default: continue;
         }
 
-        tails.push_front({head->x, head->y});
-        if ((int)tails.size() > tailLength) {
-            pair<int, int> tailEnd = tails.back();
-            tails.pop_back();
-
-            delete gameMap.mapArray[tailEnd.first][tailEnd.second];
-            gameMap.mapArray[tailEnd.first][tailEnd.second] = new blankBlock("Blank");
-        }
-        
-        delete gameMap.mapArray[head->x][head->y];
-        gameMap.mapArray[head->x][head->y] = new snakeTail("Tail", head->x, head->y);
-        
-        (head->x) = newX;
-        (head->y) = newY;
-
-        if (dynamic_cast<wallBlock*>(gameMap.mapArray[newX][newY]) || dynamic_cast<NonGateWallBlock*>(gameMap.mapArray[newX][newY]) || dynamic_cast<snakeTail*>(gameMap.mapArray[newX][newY]))
-            {
-            mvprintw(0, 0, "Game Over!");    // test
+        if (!moveSnake(snake, gameMap, dx, dy)) {
+            mvprintw(0, 0, "Game Over!");
             refresh();
-            break;                           
-            }   
-        else{
-            delete gameMap.mapArray[newX][newY];
-            head = new snakeHead("Head", newX, newY);
-            gameMap.mapArray[newX][newY] = head;
- 
+            break;
+        }
 
-            x = newX; y = newY; 
-            }
-
-        clear();
-        for (int i = 0; i < gameMap.row; ++i)
-            for (int j = 0; j < gameMap.col; ++j)
-                gameMap.mapArray[i][j]->print();
-        refresh();
+        renderMap(gameMap);
     }
 
     endwin();
