@@ -1,9 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include "ncurses.h"
 #include <string>
 #include <vector>
-#include <ncurses.h>
 #include <deque>
 using namespace std;
 
@@ -17,6 +17,7 @@ class Block {
 public:
     int type;
     int colorPair;
+    int x, y;
     string name;
 
     Block() : type(0), colorPair(0), x(0), y(0), name("") {}

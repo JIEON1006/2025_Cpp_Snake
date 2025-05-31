@@ -1,5 +1,6 @@
 #include "block.h"
 #include <vector>
+#include <ncurses.h>
 
 using namespace std;
 

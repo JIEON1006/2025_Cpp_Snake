@@ -1,5 +1,6 @@
-#include <ncurses.h>
+
 #include <unistd.h>
+#include <ncurses.h>
 #include "start_screen.h"
 
 void drawAnimatedBorder(int delay_us = 1500) {
