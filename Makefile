@@ -1,21 +1,24 @@
-# 컴파일러 및 옵션
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -Iinclude -lncurses
+CXXFLAGS = -Wall -g -std=c++17 -Iinclude -Imap
 
-# 파일 정의
 TARGET = snake_game
-SRC = main.cpp map/map.cpp
-OBJ = $(SRC:.cpp=.o)
 
-# 기본 규칙
+# 모든 cpp 파일을 자동으로 검색
+SRC := $(wildcard *.cpp) \
+       $(wildcard map/*.cpp) \
+       $(wildcard include/*.cpp)
+
+# cpp 파일에 대응되는 o 파일 리스트 생성
+OBJ := $(SRC:.cpp=.o)
+
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+	$(CXX) -o $@ $^ $(CXXFLAGcS) -lncursesw
 
+# 개별 cpp → o 파일 빌드
 %.o: %.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-# 정리
 clean:
 	rm -f $(OBJ) $(TARGET)
