@@ -3,6 +3,7 @@
 #include "block.h"
 #include "snakeManager.h"
 #include "snake.h"
+#include "gameManager.h"
 #include <locale.h>
 #include <deque>
 #include <utility>
@@ -41,25 +42,23 @@ int main() {
     Snake snake;
     initSnake(snake, gameMap);
 
-    int ch;
-    while ((ch = getch())) {
-        int dx = 0, dy = 0;
-        switch (ch) {
-            case 'w': dx = -1; break;
-            case 's': dx = 1;  break;
-            case 'a': dy = -1; break;
-            case 'd': dy = 1;  break;
-            default: continue;
-        }
+    // snake 초기화 
+    int x = gameMap.row / 2;
+    int y = gameMap.col / 2;
 
-        if (!moveSnake(snake, gameMap, dx, dy)) {       //게임오버 판정
-            mvprintw(0, 0, "Game Over!");
-            refresh();
-            break;
-        }
+    delete gameMap.mapArray[x][y];
+    snakeHead* head = new snakeHead("Head", x, y);
+    gameMap.mapArray[x][y] = head;
+    gameMap.map[x][y] = SNAKE_HEAD;
 
-        renderMap(gameMap);
-    }
+    Snake snake;
+    snake.head = head;
+    snake.length = 3;
+    snake.body.push_back({x + 1, y});
+    snake.body.push_back({x + 2, y});
+
+    // tick마다 방향키 입력받아 작동 
+    gameTickLoop(gameMap, snake);
 
     endwin();
     return 0;

@@ -18,7 +18,7 @@ void initSnake(Snake& snake, Map& gameMap) {
 }
 
 
-//snake 이동가능여부 판정함수
+//게임오버 판정용 함수 
 bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy) {
     int newX = snake.head->x + dx;
     int newY = snake.head->y + dy;
@@ -31,7 +31,7 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy) {
         return false;  // 게임오버
     }
 
-    // 몸통 앞에 새로운 위치 추가
+    // 몸 길이 갱신 
     snake.body.push_front({snake.head->x, snake.head->y});
     if ((int)snake.body.size() > snake.length) {
         auto [tx, ty] = snake.body.back();
@@ -40,6 +40,11 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy) {
         delete gameMap.mapArray[tx][ty];
         gameMap.mapArray[tx][ty] = new blankBlock("Blank");
         gameMap.map[tx][ty] = EMPTY;
+    }
+
+    // 몸 길이 3 이하일 경우 게임오버
+      if (snake.length < 3) {
+        return false;
     }
 
     // 현재 Head 자리를 Tail로 전환
