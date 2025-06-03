@@ -1,5 +1,6 @@
-#include "snake_manager.h"
+#include "snakeManager.h"
 
+//snake 위치 초기화 
 void initSnake(Snake& snake, Map& gameMap) {
     int x = gameMap.row;
     int y = gameMap.col;
@@ -12,11 +13,12 @@ void initSnake(Snake& snake, Map& gameMap) {
     gameMap.mapArray[startX][startY] = snake.head;
     gameMap.map[startX][startY] = SNAKE_HEAD;
 
-    // Snake Body 초기화
     snake.body.push_back({startX + 1, startY});
     snake.body.push_back({startX + 2, startY});
 }
 
+
+//snake 이동가능여부 판정함수
 bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy) {
     int newX = snake.head->x + dx;
     int newY = snake.head->y + dy;
@@ -54,6 +56,8 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy) {
     return true;
 }
 
+
+//gameMap 리로딩 
 void renderMap(const Map& gameMap) {
     clear();
     for (int i = 0; i < gameMap.row; ++i) {

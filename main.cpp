@@ -1,7 +1,8 @@
 #include "map/map.h"
 #include "start_screen.h"
 #include "block.h"
-#include "snake_manager.h"
+#include "snakeManager.h"
+#include "snake.h"
 #include <locale.h>
 #include <deque>
 #include <utility>
@@ -51,7 +52,7 @@ int main() {
             default: continue;
         }
 
-        if (!moveSnake(snake, gameMap, dx, dy)) {
+        if (!moveSnake(snake, gameMap, dx, dy)) {       //게임오버 판정
             mvprintw(0, 0, "Game Over!");
             refresh();
             break;
