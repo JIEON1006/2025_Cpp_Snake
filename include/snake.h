@@ -1,7 +1,7 @@
 #pragma once
 
 #include "block.h"
-#include "Map.h"
+#include "./map.h"
 #include <deque>
 #include <utility>
 

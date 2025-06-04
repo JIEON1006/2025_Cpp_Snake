@@ -27,17 +27,45 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
             lastTick = now;
 
             if (!moveSnake(snake, gameMap, dx, dy)) {
-                mvprintw(0, 0, "Game Over!");
+
+                int centerY = LINES / 2;
+                int centerX = (COLS - 18) / 2;
+
+                attron(A_BOLD);
+                attron(COLOR_PAIR(3));
+                mvprintw(centerY - 1, centerX, "===================");
+                mvprintw(centerY,     centerX, "   GAME  OVER!    ");
+                mvprintw(centerY + 1, centerX, "===================");
+                attroff(COLOR_PAIR(3));
+                attroff(A_BOLD);
+
+                mvprintw(centerY + 3, centerX, "Press any key to exit...");
                 refresh();
+
+                nodelay(stdscr, FALSE); // 입력 대기 모드로 전환
+                getch();                // 사용자 키 입력 대기
                 break;
             }
 
             // 화면 갱신
             clear();
-            for (int i = 0; i < gameMap.row; ++i)
-                for (int j = 0; j < gameMap.col; ++j)
-                    gameMap.mapArray[i][j]->print();
+            for (int i = 0; i < gameMap.row; ++i) {
+                for (int j = 0; j < gameMap.col; ++j) {
+                    int value = gameMap.map[i][j];
+
+                    // 색상 기본값: 흰색 (colorPair 1)
+                    int colorPair = 1;
+
+                    // 스네이크 머리 또는 몸통일 경우만 초록색
+                    if (value == SNAKE_HEAD || value == SNAKE_BODY) {
+                        colorPair = 2;
+                    }
+
+                    printColoredBlock(i, j, gameMap.mapArray, colorPair);
+                }
+            }
             refresh();
+
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));

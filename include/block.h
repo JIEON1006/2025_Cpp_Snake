@@ -10,6 +10,8 @@ using namespace std;
 #define BLANK_BLOCK   "□"
 #define FILL_BLOCK    "■"
 #define FILL_DIAMOND  "◆"
+#define FILL_TRIANGLE    "▲"
+
 
 
 
@@ -70,7 +72,7 @@ public:
         this->name = name_;
     }
     const char* print() const override {
-        return FILL_BLOCK;
+        return FILL_TRIANGLE;
     }
 };
 
@@ -82,7 +84,7 @@ public:
         this->name = name_;
     }
     const char* print() const override {
-        return FILL_BLOCK;
+        return FILL_TRIANGLE;
     }
 };
 

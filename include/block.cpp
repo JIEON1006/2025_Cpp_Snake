@@ -1,6 +1,5 @@
 #include "block.h"
 #include <vector>
-#include "ncurses.h"
 
 using namespace std;
 
@@ -12,7 +11,7 @@ void printBlockAt(int x, int y, const std::vector<std::vector<Block*>>& mapArray
     int startX = (COLS - col * 2) / 2;
 
     if (x >= 0 && x < row && y >= 0 && y < col && mapArray[x][y]) {
-        mvprintw(startY + x, startX + y * 2, "%s", mapArray[x][y]->print());  // wchar_t*
+        mvaddstr(startY + x, startX + y * 2, mapArray[x][y]->print());
     }
 }
 
@@ -25,7 +24,7 @@ void printColoredBlock(int x, int y, const std::vector<std::vector<Block*>>& map
 
     if (x >= 0 && x < row && y >= 0 && y < col && mapArray[x][y]) {
         attron(COLOR_PAIR(colorPair));
-        mvprintw(startY + x, startX + y * 2, "%s", mapArray[x][y]->print());  // %ls for wchar_t*
+        mvaddstr(startY + x, startX + y * 2, mapArray[x][y]->print());
         attroff(COLOR_PAIR(colorPair));
     }
 }

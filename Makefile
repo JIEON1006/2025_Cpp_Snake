@@ -14,7 +14,7 @@ OBJ := $(SRC:.cpp=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS) -lncurses
+	$(CXX) -o $@ $^ $(CXXFLAGS) -lncursesw
 
 # 개별 cpp → o 파일 빌드
 %.o: %.cpp

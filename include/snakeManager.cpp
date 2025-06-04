@@ -7,6 +7,8 @@ void initSnake(Snake& snake, Map& gameMap) {
     int startX = x / 2;
     int startY = y / 2;
 
+    //cout<<startX << " " << startY <<endl;
+
     // 기존 블록 제거 후 SnakeHead 배치
     delete gameMap.mapArray[startX][startY];
     snake.head = new snakeHead("Head", startX, startY);
