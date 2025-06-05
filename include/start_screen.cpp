@@ -1,5 +1,6 @@
-#include <ncurses.h>
+
 #include <unistd.h>
+#include <ncurses.h>
 #include "start_screen.h"
 
 void drawAnimatedBorder(int delay_us = 1500) {
@@ -35,7 +36,7 @@ void showStartScreen() {
     getmaxyx(stdscr, height, width);
 
     start_color();
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(1, COLOR_GREEN, -1);
     attron(COLOR_PAIR(1));
 
     drawAnimatedBorder(1500);
@@ -88,3 +89,28 @@ void showStartScreen() {
 
     nodelay(stdscr, FALSE);  // 원상 복구
 }
+
+void printGameOverScreen() {
+    int centerY = LINES / 2;
+    int centerX = (COLS - 18) / 2;
+
+    attron(A_BOLD);
+    attron(COLOR_PAIR(3));  // Red (예: game over 메시지용)
+
+    mvprintw(centerY - 2, centerX, "                            ");
+    mvprintw(centerY - 1, centerX, "    ===================     ");
+    mvprintw(centerY,     centerX, "        GAME  OVER!         ");
+    mvprintw(centerY + 1, centerX, "    ===================     ");
+    mvprintw(centerY + 2, centerX, "                            ");
+
+
+    attroff(COLOR_PAIR(3));
+    attroff(A_BOLD);
+
+    mvprintw(centerY + 3, centerX, "  Press any key to exit...  ");
+    refresh();
+
+    nodelay(stdscr, FALSE);  // blocking 모드로 전환
+    getch();                 // 사용자 입력 대기
+}
+
