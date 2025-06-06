@@ -1,5 +1,5 @@
 #include "map/map.h"
-#include "start_screen.h"
+#include "screen.h"
 #include "block.h"
 #include "snakeManager.h"
 #include "snake.h"
@@ -12,7 +12,7 @@
 
 int main() {
 
-      // 1. 유니코드 특수 문자 출력을 위한 로케일 설정
+    // 1. 유니코드 특수 문자 출력을 위한 로케일 설정
     setlocale(LC_ALL, "");
 
     // 2. ncurses 초기화
@@ -42,9 +42,6 @@ int main() {
     Snake snake;
     initSnake(snake, gameMap);
 
-    //gameMap.printMap();        // 블록 문자 출력
-    //getch();
-
     // snake 초기화 
     int x = gameMap.row / 2;
     int y = gameMap.col / 2;
@@ -53,12 +50,6 @@ int main() {
     snakeHead* head = new snakeHead("Head", x, y);
     gameMap.mapArray[x][y] = head;
     gameMap.map[x][y] = SNAKE_HEAD;
-
-    //Snake snake;
-    //snake.head = head;
-    //snake.length = 3;
-    //snake.body.push_back({x + 1, y});
-    //snake.body.push_back({x + 2, y});
 
     // tick마다 방향키 입력받아 작동 
     gameTickLoop(gameMap, snake);

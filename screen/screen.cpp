@@ -1,7 +1,8 @@
 
 #include <unistd.h>
 #include <ncurses.h>
-#include "start_screen.h"
+#include "screen.h"
+#include <iostream>
 
 void drawAnimatedBorder(int delay_us = 1500) {
     int height, width;
@@ -90,27 +91,42 @@ void showStartScreen() {
     nodelay(stdscr, FALSE);  // 원상 복구
 }
 
-void printGameOverScreen() {
-    int centerY = LINES / 2;
-    int centerX = (COLS - 18) / 2;
+void printGameOverScreen(const std::string& cause) {
+    int width = 55;  // 박스 너비를 넉넉하게 확보
+    int height = 9;
+    int startY = (LINES - height) / 2;
+    int startX = (COLS - width) / 2;
 
     attron(A_BOLD);
-    attron(COLOR_PAIR(3));  // Red (예: game over 메시지용)
+    attron(COLOR_PAIR(3));
 
-    mvprintw(centerY - 2, centerX, "                            ");
-    mvprintw(centerY - 1, centerX, "    ===================     ");
-    mvprintw(centerY,     centerX, "        GAME  OVER!         ");
-    mvprintw(centerY + 1, centerX, "    ===================     ");
-    mvprintw(centerY + 2, centerX, "                            ");
+    // 상단 박스 테두리
+    mvprintw(startY, startX,       "╔═════════════════════════════════════════════════════════════╗");
+    mvprintw(startY + 1, startX,   "║                                                             ║");
+    mvprintw(startY + 2, startX,   "║                     █▀▀ ▄▀█ █▀▄▀█ █▀▀                       ║");
+    mvprintw(startY + 3, startX,   "║                     █▄▄ █▀█ █░▀░█ █▄▄                       ║");
+    mvprintw(startY + 4, startX,   "║                                                             ║");
 
+    // Reason 메시지 중앙 정렬
+    std::string centeredCause = "Reason: " + cause;
+    int causeX = startX + 1 + (width - 2 - centeredCause.length()) / 2+9;
+    mvprintw(startY + 5, startX,   "║                                                             ║");
+    mvprintw(startY + 5, causeX, "%s", centeredCause.c_str());
+
+    // Press any key 메시지 중앙 정렬
+    std::string exitMsg = "Press any key to exit...";
+    int exitX = startX + 1 + (width - 2 - exitMsg.length()) / 2+5;
+    mvprintw(startY + 6, startX,   "║                                                             ║");
+    mvprintw(startY + 6, exitX, "%s", exitMsg.c_str());
+
+    // 하단 박스 테두리
+    mvprintw(startY + 7, startX,   "║                                                             ║");
+    mvprintw(startY + 8, startX,   "╚═════════════════════════════════════════════════════════════╝");
 
     attroff(COLOR_PAIR(3));
     attroff(A_BOLD);
 
-    mvprintw(centerY + 3, centerX, "  Press any key to exit...  ");
     refresh();
-
-    nodelay(stdscr, FALSE);  // blocking 모드로 전환
-    getch();                 // 사용자 입력 대기
+    nodelay(stdscr, FALSE);
+    getch();
 }
-

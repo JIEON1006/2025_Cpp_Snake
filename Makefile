@@ -1,24 +1,26 @@
-CXX = g++
-CXXFLAGS = -Wall -std=c++17 -Iinclude -Imap
+CXX := g++
+CXXFLAGS := -Wall -std=c++17
 
-TARGET = snake_game
+# .git, .vscode, 숨김 디렉토리 제외
+SUBDIRS := $(shell find . -type d \
+            ! -path "./.*" \
+            ! -path "./.git*" \
+            ! -path "./.vscode*" \
+            ! -path "./build*")
 
-# 모든 cpp 파일을 자동으로 검색
-SRC := $(wildcard *.cpp) \
-       $(wildcard map/*.cpp) \
-       $(wildcard include/*.cpp)
-
-# cpp 파일에 대응되는 o 파일 리스트 생성
+SRC := $(foreach dir, $(SUBDIRS), $(wildcard $(dir)/*.cpp))
 OBJ := $(SRC:.cpp=.o)
+INCLUDES := $(addprefix -I, $(SUBDIRS))
+
+TARGET := snake_game
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS) -lncursesw
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(INCLUDES) -lncursesw
 
-# 개별 cpp → o 파일 빌드
 %.o: %.cpp
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
+	$(CXX) -c $< -o $@ $(CXXFLAGS) $(INCLUDES)
 
 clean:
 	rm -f $(OBJ) $(TARGET)

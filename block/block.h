@@ -102,6 +102,24 @@ public:
     }
 };
 
+class itemBlock : public Block {
+public:
+    std::string itemType; // "fruit", "poison", "speed", "double"
+
+    itemBlock(const string& name_, const string& itemType_) {
+        this->type = 6;  // 아이템은 type 6 이상
+        this->name = name_;
+        this->itemType = itemType_;
+    }
+
+    const char* print() const override {
+        if (itemType == "fruit") return "+";
+        else if (itemType == "poison") return "-";
+        else if (itemType == "speed") return "↑";
+        else if (itemType == "double") return "★";
+        return "?";
+    }
+};
 
 // 좌표를 입력받아 해당 좌표의 Block 출력
 void printBlockAt(int x, int y, const std::vector<std::vector<Block*>>& mapArray);

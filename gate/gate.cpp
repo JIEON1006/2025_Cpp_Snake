@@ -35,6 +35,10 @@ void placeGates(Map& gameMap) {
 }
 
 
+/*
+moveSnake() 내에서 이 findExitPosition()을 호출해서 머리가 게이트에 닿으면 다른 게이트로 나오게 합니다
+게이트를 나온 후 방향(Rule4)에 관해선 이 함수를 수정하면 될 것 같습니다!
+*/
 std::pair<int, int> findExitPosition(std::pair<int, int> gatePos, const Map& gameMap, int inDx, int inDy) {
     int x = gatePos.first;
     int y = gatePos.second;

@@ -21,6 +21,8 @@ enum MapElement {
     GATE = 5,
     GROWTH_ITEM = 6,
     MINUS_ITEM = 7, // 변수명 minus로 할지 poison으로 할지 말씀드리기
+    DOUBLE_SPEED =8,
+    DOUBLE_LENGTH=9
 };
 
 class Map {

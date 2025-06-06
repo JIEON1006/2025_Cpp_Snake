@@ -2,7 +2,8 @@
 
 #include "map.h"
 #include "snakeManager.h"
-#include "start_screen.h"
+#include "screen.h"
+#include "itemManager.h"
 #include <chrono>
 #include <thread>
 #include <ncurses.h>
