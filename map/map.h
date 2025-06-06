@@ -7,6 +7,10 @@
 #define MAP_ROW 100     // 맵 최대 행 크기
 #define MAP_COL 100     // 맵 최대 열 크기
 
+extern std::pair<int, int> gateA, gateB;
+extern bool gateInitialized;
+
+
 // Map 구성 요소 정의
 enum MapElement {
     EMPTY = 0,
@@ -17,6 +21,8 @@ enum MapElement {
     GATE = 5,
     GROWTH_ITEM = 6,
     MINUS_ITEM = 7, // 변수명 minus로 할지 poison으로 할지 말씀드리기
+    DOUBLE_SPEED =8,
+    DOUBLE_LENGTH=9
 };
 
 class Map {

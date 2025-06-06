@@ -1,14 +1,16 @@
-#define _XOPEN_SOURCE_EXTENDED 1
-#include <ncursesw/ncurses.h>
-
-#include <ncurses.h>
-#include "map.h"
-#include "include/start_screen.h"
-#include "include/block.h"
+#include "map/map.h"
+#include "screen.h"
+#include "block.h"
+#include "snakeManager.h"
+#include "snake.h"
+#include "gameManager.h"
+#include "gate.h"
 #include <locale.h>
+#include <deque>
+#include <utility>
+
 
 int main() {
-   
     // 1. 유니코드 특수 문자 출력을 위한 로케일 설정
     setlocale(LC_ALL, "");
 
@@ -34,13 +36,23 @@ int main() {
 
     // 5. 맵 객체 생성 및 출력
     Map gameMap;               // map.txt로부터 정수 map 로딩 및 Block 배열 생성
-    gameMap.printMap();        // 블록 문자 출력
-    getch();                   // 사용자 키 입력 대기
+    placeGates(gameMap);       //  게이트 2개를 맵에 배치 (벽에서 선택)
 
-    gameMap.printColoredMap(); // 색상 적용된 출력
-    getch();
+    Snake snake;
+    initSnake(snake, gameMap);
 
-    // 6. 종료
+    // snake 초기화 
+    int x = gameMap.row / 2;
+    int y = gameMap.col / 2;
+
+    delete gameMap.mapArray[x][y];
+    snakeHead* head = new snakeHead("Head", x, y);
+    gameMap.mapArray[x][y] = head;
+    gameMap.map[x][y] = SNAKE_HEAD;
+
+    // tick마다 방향키 입력받아 작동 
+    gameTickLoop(gameMap, snake);
+
     endwin();
     return 0;
 

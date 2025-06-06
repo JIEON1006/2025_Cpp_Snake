@@ -3,6 +3,13 @@
 #include <ncurses.h>
 #include <fstream>
 #include <sstream>
+#include <random>
+#include <algorithm>
+
+
+std::pair<int, int> gateA, gateB;
+bool gateInitialized = false;
+
 
 Map::Map() { //map.txt로 부터 읽어와 정수로 이루어진 map 벡터를 초기화하고 -> 각 벡터의 원소를 
     loadFromFile("./map.txt");
@@ -134,7 +141,6 @@ vector<vector<Block*>> createBlockMatrix(const vector<vector<int>>& intMatrix) {
                 blockMatrix[row][col] = new wallBlock("wall");
             else if (value == 2)
                 blockMatrix[row][col] = new NonGateWallBlock("NonGate");
-
             /* 나머지 클래스 필요하면 차후에 추가 */
         
         }
