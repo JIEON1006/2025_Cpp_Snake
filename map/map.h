@@ -32,10 +32,12 @@ public:
     std::vector<std::vector<Block*>> mapArray;          // Block 포인터 기반 시각화용 맵
 
     Map();                                              // 생성자: map.txt 로딩 및 mapArray 초기화
+    Map(int stageNum);                                  // 스테이지 번호 기반 생성자 추가
     ~Map();                                             // 소멸자: 동적 메모리 해제
 
     void initMap();                                     // 공백과 벽으로 초기화된 기본 맵 생성
     void loadFromFile(const std::string& filename);     // map.txt로부터 맵 로딩
+    void loadFromFile(int stageNum);  // 
 
     void printMap();                                     // 전체 맵 출력 (색상 없음)
     void printColoredMap();                              // 전체 맵 출력 (색상 있음)
@@ -49,3 +51,4 @@ std::vector<std::vector<Block*>> createBlockMatrix(const std::vector<std::vector
 
 //동적 배열 해제 함수: stage 전환 시 반드시 사용할 것
 void destroyBlockMatrix(std::vector<std::vector<Block*>>& matrix);  // 동적 Block 배열 메모리 해제
+

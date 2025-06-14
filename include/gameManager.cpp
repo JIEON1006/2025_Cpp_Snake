@@ -1,5 +1,6 @@
 #include "gameManager.h"
 #include "itemManager.h"
+#include <string>
 
 void gameTickLoop(Map& gameMap, Snake& snake) {
     int dx = -1, dy = 0;

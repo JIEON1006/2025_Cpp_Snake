@@ -1,5 +1,6 @@
 
 #include <unistd.h>
+#include <string>
 #include <ncurses.h>
 #include "screen.h"
 #include <iostream>

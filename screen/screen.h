@@ -1,8 +1,9 @@
 #pragma once
+#include <string>
 #include <iostream>
 
 void showStartScreen();
-void printGameOverScreen(const std::string cause);
+void printGameOverScreen(const std::string& cause);
 
 #define LENGTH_UNDER_3 "몸 길이가 3 미만입니다"
 #define WALL "벽에 부딪혔습니다"

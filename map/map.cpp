@@ -15,6 +15,13 @@ Map::Map() { //map.txt로 부터 읽어와 정수로 이루어진 map 벡터를 
     loadFromFile("./map.txt");
 }
 
+Map::Map(int stageNum) {
+    row = 0;
+    col = 0;
+    loadFromFile(stageNum);  // 생성되자마자 자동 로딩
+}
+
+
 Map::~Map() {
     for (int i = 0; i < row; ++i) {
         for (int j = 0; j < col; ++j) {
@@ -76,6 +83,15 @@ void Map::loadFromFile(const std::string& filename) { //map.txt를 읽어와서 
         }
     }
 }
+
+
+void Map::loadFromFile(int stageNum) {
+    std::stringstream ss;
+    ss << "./map_stage" << stageNum << ".txt";
+    std::string filename = ss.str();
+    loadFromFile(filename);  // 기존 string 버전 재사용
+}
+
 
 void Map::printMap() { //for문을 돌며 블록 단위로 맵 출력
     for (int i = 0; i < row; ++i) {
