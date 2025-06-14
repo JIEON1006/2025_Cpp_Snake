@@ -66,16 +66,21 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy,
 
     //머리가 게이트와 닿으면 게이트 이동 실행
     if (gameMap.map[newX][newY] == GATE) {
-        std::pair<int, int> current = {newX, newY};
-        std::pair<int, int> outGate = (current == gateA) ? gateB : gateA;
+    std::pair<int, int> current = {newX, newY};
+    std::pair<int, int> other = (current == gateA) ? gateB : gateA;
 
+    std::pair<int, int> exitDir = findExitDirection(other, gameMap, dx, dy);
+    std::pair<int, int> exitPos = findExitPosition(other, exitDir);
 
-        std::pair<int, int> exit = findExitPosition(outGate, gameMap, dx, dy);
-        if (exit.first == -1) return false;  // 출구가 없음
+    if (exitPos.first == -1) return false;  // 예외 처리
 
-        newX = exit.first;
-        newY = exit.second;
-    }
+    dx = exitDir.first;
+    dy = exitDir.second;
+
+    newX = exitPos.first;
+    newY = exitPos.second;
+}
+
 
     // 현재 Head 자리를 Tail로 전환
     delete gameMap.mapArray[snake.head->x][snake.head->y];
@@ -89,6 +94,30 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy,
     gameMap.map[newX][newY] = SNAKE_HEAD;
 
     return true;
+}
+
+std::pair<int, int> findExitDirection(std::pair<int, int> gatePos, const Map& gameMap, int inDx, int inDy) {
+    int x = gatePos.first;
+    int y = gatePos.second;
+
+    // 1. 가장자리 Gate → 무조건 맵 안쪽으로
+    if (x == 0) return {1, 0};                      // 상단: 아래로
+    if (x == gameMap.row - 1) return {-1, 0};       // 하단: 위로
+    if (y == 0) return {0, 1};                      // 좌측: 오른쪽으로
+    if (y == gameMap.col - 1) return {0, -1};       // 우측: 왼쪽으로
+
+    // 2. 가운데 Gate
+    if (inDx == 0) {  // 좌우 방향으로 진입했을 때
+        if (inDy == 1 || inDx == -1) return {0, 1};   // 오른쪽, 위 → 오른쪽
+        else return {0, -1};                          // 왼쪽, 아래 → 왼쪽
+    } else {        // 상하 방향으로 진입했을 때
+        if (inDy == 1 || inDx == -1) return {-1, 0};  // 오른쪽, 위 → 위
+        else return {1, 0};                           // 왼쪽, 아래 → 아래
+    }
+}
+
+std::pair<int, int> findExitPosition(std::pair<int, int> gatePos, std::pair<int, int> outDir) {
+    return {gatePos.first + outDir.first, gatePos.second + outDir.second};
 }
 
 
