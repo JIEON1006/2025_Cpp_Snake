@@ -67,18 +67,17 @@ bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy,
     //머리가 게이트와 닿으면 게이트 이동 실행
     if (gameMap.map[newX][newY] == GATE) {
     std::pair<int, int> current = {newX, newY};
-    std::pair<int, int> other = (current == gateA) ? gateB : gateA;
+    std::pair<int, int> outGate = (current == gateA) ? gateB : gateA;
 
-    std::pair<int, int> exitDir = findExitDirection(other, gameMap, dx, dy);
-    std::pair<int, int> exitPos = findExitPosition(other, exitDir);
+    std::pair<int, int> outDir = findExitDirection(outGate, gameMap, dx, dy);
+    std::pair<int, int> exit = findExitPosition(outGate, gameMap, outDir);
 
-    if (exitPos.first == -1) return false;  // 예외 처리
+    if (exit.first == -1) return false;
 
-    dx = exitDir.first;
-    dy = exitDir.second;
-
-    newX = exitPos.first;
-    newY = exitPos.second;
+    newX = exit.first;
+    newY = exit.second;
+    dx = outDir.first;
+    dy = outDir.second;
 }
 
 
@@ -100,40 +99,68 @@ std::pair<int, int> findExitDirection(std::pair<int, int> gatePos, const Map& ga
     int x = gatePos.first;
     int y = gatePos.second;
 
-    // 가장자리일 경우: 내부 방향 중 유효하고 EMPTY인 방향 선택
-    if (x == 0 || x == gameMap.row - 1 || y == 0 || y == gameMap.col - 1) {
-        std::vector<std::pair<int, int>> edgeDirs;
+    // 가장자리 게이트: 맵 안쪽 방향
+    if (x == 0) return {1, 0};                       // 상단 → 아래
+    if (x == gameMap.row - 1) return {-1, 0};        // 하단 → 위
+    if (y == 0) return {0, 1};                       // 좌측 → 오른쪽
+    if (y == gameMap.col - 1) return {0, -1};        // 우측 → 왼쪽
 
-        if (x == 0) edgeDirs.push_back({1, 0});  // 아래
-        if (x == gameMap.row - 1) edgeDirs.push_back({-1, 0});  // 위
-        if (y == 0) edgeDirs.push_back({0, 1});  // 오른쪽
-        if (y == gameMap.col - 1) edgeDirs.push_back({0, -1});  // 왼쪽
+    // 가운데 게이트: 진출 가능한 방향 판단
+    std::vector<std::pair<int, int>> candidates;
 
-        for (const auto& dir : edgeDirs) {
-            int nx = x + dir.first;
-            int ny = y + dir.second;
-            if (nx >= 0 && nx < gameMap.row && ny >= 0 && ny < gameMap.col &&
-                gameMap.map[nx][ny] == EMPTY) {
-                return dir;
-            }
+    // 상, 하, 좌, 우
+    std::vector<std::pair<int, int>> directions = {
+        {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+    };
+
+    for (const auto& dir : directions) {
+        int nx = x + dir.first;
+        int ny = y + dir.second;
+        if (nx >= 0 && ny >= 0 && nx < gameMap.row && ny < gameMap.col &&
+            gameMap.map[nx][ny] == EMPTY) {
+            candidates.push_back(dir);
         }
-        return {-999, -999};  // 나갈 수 있는 방향 없음
     }
 
-    // 가운데 Gate일 경우: 규칙 적용
-    if (inDx == 0) { // 좌우 진입
-        return (inDy > 0) ? std::pair<int, int>{0, 1}   // 오른쪽 진입 → 오른쪽
-                          : std::pair<int, int>{0, -1}; // 왼쪽 진입 → 왼쪽
-    } else {         // 상하 진입
-        return (inDx < 0) ? std::pair<int, int>{-1, 0}  // 위 진입 → 위
-                          : std::pair<int, int>{1, 0};  // 아래 진입 → 아래
+    if (candidates.empty()) return {0, 0};  // 나갈 수 없음
+
+    // 진입 방향 유지 우선
+    for (const auto& dir : candidates)
+        if (dir == std::make_pair(inDx, inDy)) return dir;
+
+    // 나머지는 규칙 적용
+    for (const auto& dir : candidates) {
+        if (dir.first == 0) {
+            // 좌우 방향
+            if ((inDx == -1 || inDy == 1)) return {0, 1};   // 위 or 오른쪽 → 오른쪽
+            else return {0, -1};                            // 왼쪽 or 아래 → 왼쪽
+        } else if (dir.second == 0) {
+            // 상하 방향
+            if ((inDx == -1 || inDy == 1)) return {-1, 0};  // 위 or 오른쪽 → 위
+            else return {1, 0};                             // 왼쪽 or 아래 → 아래
+        }
     }
+
+    return {0, 0};  // fallback
 }
 
-std::pair<int, int> findExitPosition(std::pair<int, int> gatePos, std::pair<int, int> outDir) {
-    return {gatePos.first + outDir.first, gatePos.second + outDir.second};
-}
+std::pair<int, int> findExitPosition(std::pair<int, int> gatePos,
+                                     const Map& gameMap,
+                                     std::pair<int, int> outDir) {
+    int x = gatePos.first;
+    int y = gatePos.second;
 
+    int nx = x + outDir.first;
+    int ny = y + outDir.second;
+
+    // 벽 충돌 방지
+    if (nx >= 0 && ny >= 0 && nx < gameMap.row && ny < gameMap.col &&
+        gameMap.map[nx][ny] == EMPTY) {
+        return {nx, ny};
+    }
+
+    return {-1, -1};  // 나갈 수 없는 위치
+}
 
 //gameMap 리로딩 
 void renderMap(const Map& gameMap) {
