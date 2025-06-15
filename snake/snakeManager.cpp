@@ -136,7 +136,7 @@ std::pair<int, int> findExitDirection(std::pair<int, int> gatePos, const Map& ga
             else return {0, -1};                            // 왼쪽 or 아래 → 왼쪽
         } else if (dir.second == 0) {
             // 상하 방향
-            if ((inDx == -1 || inDy == 1)) return {-1, 0};  // 위 or 오른쪽 → 위
+            if ((inDx == -1 || inDy == -1)) return {-1, 0};  // 위 or 오른쪽 → 위
             else return {1, 0};                             // 왼쪽 or 아래 → 아래
         }
     }
