@@ -22,6 +22,9 @@ public:
         totalScore = 0;
     }
     ~Player() {}
+
+    void ResetScores();
+
     void SetLengthScore(int value)
     {
         lengthScore = value;

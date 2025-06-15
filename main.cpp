@@ -47,8 +47,10 @@ int main() {
     // 5. 총 3 스테이지 반복
     for (int i = 0; i < 4; ++i) {
         stage->setNowStage(i);              // 현재 스테이지 설정
-        
+        stage->clear = false;
         gateInitialized = false; 
+
+        player->ResetScores();
         
         Map gameMap(i);                     // 스테이지별 맵 로딩
         placeGates(gameMap);                // 게이트 배치

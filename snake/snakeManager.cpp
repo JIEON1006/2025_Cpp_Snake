@@ -74,6 +74,8 @@ bool moveSnake(Snake& snake, Map& gameMap, int& dx, int& dy,
     std::pair<int, int> current = {newX, newY};
     std::pair<int, int> outGate = (current == gateA) ? gateB : gateA;
 
+    player->gateScore++;
+
     std::pair<int, int> outDir = findExitDirection(outGate, gameMap, dx, dy);
     std::pair<int, int> exit = findExitPosition(outGate, gameMap, outDir);
 
