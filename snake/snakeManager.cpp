@@ -22,7 +22,7 @@ void initSnake(Snake& snake, Map& gameMap) {
 
 
 //게임오버 판정용 함수 
-bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy,
+bool moveSnake(Snake& snake, Map& gameMap, int& dx, int& dy,
                itemManager* manager,
                int& tickIntervalMs,
                std::chrono::steady_clock::time_point& speedEndTime){

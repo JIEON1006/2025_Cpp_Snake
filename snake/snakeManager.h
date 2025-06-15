@@ -8,11 +8,13 @@
 #include <utility>
 
 void initSnake(Snake& snake, Map& gameMap);
-bool moveSnake(Snake& snake, Map& gameMap, int dx, int dy,
+bool moveSnake(Snake& snake, Map& gameMap, int& dx, int& dy,
                itemManager* manager,
                int& tickIntervalMs,
                std::chrono::steady_clock::time_point& speedEndTime);
 void renderMap(const Map& gameMap);
 
-std::pair<int, int> findExitPosition(std::pair<int, int> gatePos, std::pair<int, int> outDir);
+std::pair<int, int> findExitPosition(std::pair<int, int> gatePos,
+                                     const Map& gameMap,
+                                     std::pair<int, int> outDir);
 std::pair<int, int> findExitDirection(std::pair<int, int> gatePos, const Map& gameMap, int inDx, int inDy);
