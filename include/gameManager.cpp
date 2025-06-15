@@ -1,6 +1,13 @@
 #include "gameManager.h"
 #include "itemManager.h"
 #include <string>
+#include "Player.h"
+#include "screen.h"
+#include "Stage.h"
+#include "Format.h"
+
+extern Player* player;
+extern Stage* stage;
 
 void gameTickLoop(Map& gameMap, Snake& snake) {
     int dx = -1, dy = 0;
@@ -8,10 +15,12 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
     curs_set(0);
 
     auto lastTick = std::chrono::steady_clock::now();
-    itemManager manager;
-
+    auto speedEndTime = std::chrono::steady_clock::now();
+    auto startTime = std::chrono::steady_clock::now();
     int tickIntervalMs = 500;
-    std::chrono::steady_clock::time_point speedEndTime = std::chrono::steady_clock::now();
+
+    itemManager manager;
+    Format format;
 
     while (true) {
         auto now = std::chrono::steady_clock::now();
@@ -28,24 +37,66 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
         }
 
         if (elapsed >= tickIntervalMs) {
+
             lastTick = now;
 
+            // 1. 아이템 처리
             manager.spawnItems(gameMap);
             manager.removeExpiredItems(gameMap);
-
+            
+            // 2. Snake 이동 실패 시 → 충돌이므로 실패
             if (!moveSnake(snake, gameMap, dx, dy, &manager, tickIntervalMs, speedEndTime)) {
-                break;
+                player->SetLengthScore(snake.length);
+                player->SetTotalScore(snake.length);
+                printStageResult(false);
+                return;
             }
 
-            // 속도 회복 처리
+            // 3. Snake 길이 < 3이면 즉시 종료
+            if (snake.length < 3) {
+                player->SetLengthScore(snake.length);
+                player->SetTotalScore(snake.length);
+                printStageResult(false);
+                return;
+            }
+
+            // 4. 속도 회복 처리
             if (tickIntervalMs < 500 && now >= speedEndTime) { //속도 조절, tickIntervalMs과 일치해야 함
                 tickIntervalMs = 500;
             }
 
-            if (snake.length < 3) {
-                printGameOverScreen(LENGTH_UNDER_3);
-                break;
+            // 5. 점수 계산
+            player->SetLengthScore(snake.length);
+            player->SetTotalScore(snake.length);
+
+            // 6. 미션 달성 시 성공 처리
+            if (!stage->clear && checkMissionComplete(player, stage)) {
+                stage->clear = true;
+
+                // 미션 클리어 화면 출력 + 점수 요약
+                nodelay(stdscr, FALSE);  // 키 입력 대기 모드로 전환
+                printStageResult(true);
+                nodelay(stdscr, TRUE);   // 다시 논블로킹 모드로 복구
+
+                return;  // 다음 스테이지로 이동
             }
+
+            // 7. 타임아웃 체크
+            float eTime = std::chrono::duration<float>(now - startTime).count();
+            if (eTime >= 60.0f) {
+                player->SetLengthScore(snake.length);
+                player->SetTotalScore(snake.length);
+
+                // 게임오버 화면 출력
+                nodelay(stdscr, FALSE);
+                printGameOverScreen(TIME_OUT);
+
+                // 결과 요약 및 종료
+                printStageResult(false);
+                nodelay(stdscr, TRUE);
+                return;
+            }
+
 
             clear();
             for (int i = 0; i < gameMap.row; ++i) {
@@ -67,8 +118,16 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
                 }
             }
 
+            // 점수판 출력
+            eTime = std::chrono::duration<float>(now - startTime).count();
+            format.Update(eTime);
+            format.Render();
+
+            refresh();
+            
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 }
+
 

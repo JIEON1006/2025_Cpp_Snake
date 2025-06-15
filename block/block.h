@@ -7,15 +7,16 @@
 #include <deque>
 using namespace std;
 
-#define BLANK_BLOCK   "□"
+#define BLANK   " "
 #define FILL_BLOCK    "■"
 #define FILL_DIAMOND  "◆"
 #define TAIL          "○"
 #define HEAD          "●"
 #define GATE_PRINT    "×"
-#define GROWTH "+"
-#define POISION "-"
-
+#define GROWTH "＋"
+#define POISION "－"
+#define SPEED_DOUBLE "⇈"
+#define LENGTH_DOUBLE "★"
 
 class Block {
 public:
@@ -38,7 +39,7 @@ public:
     }
 
     const char* print() const override {
-        return BLANK_BLOCK;
+        return BLANK;
     }
 };
 
@@ -113,10 +114,10 @@ public:
     }
 
     const char* print() const override {
-        if (itemType == "fruit") return "+";
-        else if (itemType == "poison") return "-";
-        else if (itemType == "speed") return "↑";
-        else if (itemType == "double") return "★";
+        if (itemType == "fruit") return GROWTH;
+        else if (itemType == "poison") return POISION;
+        else if (itemType == "speed") return SPEED_DOUBLE;
+        else if (itemType == "double") return LENGTH_DOUBLE;
         return "?";
     }
 };

@@ -33,6 +33,40 @@ void Format::Render()
     DrawMission();
 }
 
+void Format::DrawScore() {
+    move(7, maxwidth / 5 * 4 + 4);
+    printw("< S C O R E >");
+
+    for (int i = 0; i < 26; i++) {
+        move(8, maxwidth / 5 * 4 - 3 + i);
+        addch('-');
+    }
+
+    move(10, maxwidth / 5 * 4 + 4);
+    printw("B : %d", player->lengthScore);
+
+    move(11, maxwidth / 5 * 4 + 4);
+    printw("+ : %d", player->growScore);
+
+    move(12, maxwidth / 5 * 4 + 4);
+    printw("- : %d", player->poisonScore);
+
+    move(13, maxwidth / 5 * 4 + 4);
+    printw("G : %d", player->gateScore);
+
+    move(14, maxwidth / 5 * 4 + 4);
+    printw("Speed x2 : %d", player->speedScore);
+
+    move(15, maxwidth / 5 * 4 + 4);
+    printw("Length x2 : %d", player->doubleScore);
+
+    for (int i = 0; i < 26; i++) {
+        move(18, maxwidth / 5 * 4 - 3 + i);
+        addch('-');
+    }
+}
+
+/*
 void Format::DrawScore()
 {
 
@@ -69,6 +103,7 @@ void Format::DrawScore()
         addch('-');
     }
 }
+*/
 
 void Format::DrawTime(float eTime)
 {
@@ -80,7 +115,10 @@ void Format::DrawTime(float eTime)
     }
 
     gameTime = eTime - gameStartTime;
-    digitTime = (int)(60 - gameTime);
+    gameTime = eTime - gameStartTime; //
+    digitTime = (int)(60 - gameTime); //
+    if (digitTime < 0) digitTime = 0; //
+
 
     for (int j = 0; j < 5; j++)
     {
@@ -148,10 +186,10 @@ void Format::DrawMission()
     printw("Gate : %d/%d (%c)", player->gateScore, nowMission[3], Complete(player->gateScore, nowMission[3]));
 
     move(30, maxwidth / 5 * 4 + 4);
-    printw("Gate : %d/%d (%c)", player->speedScore, nowMission[4], Complete(player->speedScore, nowMission[4]));
+    printw("Speed x2 : %d/%d (%c)", player->speedScore, nowMission[4], Complete(player->speedScore, nowMission[4]));
 
     move(32, maxwidth / 5 * 4 + 4);
-    printw("Gate : %d/%d (%c)", player->doubleScore, nowMission[5], Complete(player->doubleScore, nowMission[5]));
+    printw("Length x2 : %d/%d (%c)", player->doubleScore, nowMission[5], Complete(player->doubleScore, nowMission[5]));
 
     for (int i = 0; i < 26; i++)
     {

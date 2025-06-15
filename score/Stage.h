@@ -1,7 +1,8 @@
 #pragma once
 
 #include "IObject.h"
-#include "map.h"  // Map 클래스 사용을 위해 필요
+#include "map.h" 
+#include "Player.h" 
 
 class Stage : public IObject {
 public:
@@ -9,10 +10,12 @@ public:
     bool clear;         // 클리어 여부
 
     // 미션 배열 (뱀 길이, grow 아이템, poison 아이템, gate 아이템, speed 아이템, double 아이템)
-    int mission[3][6] = {
-        {6, 1, 1, 1, 1, 1},
+    int mission[4][6] = {
+        //{6, 1, 1, 1, 1, 1},
+        {4, 0, 0, 0, 0, 0},
         {6, 2, 2, 2, 1, 1},
         {6, 2, 3, 3, 2, 2},
+        {6, 3, 4, 4, 3, 3},
     };
 
     Stage();            // 생성자
@@ -26,3 +29,5 @@ public:
     void Render() override;
 
 };
+
+bool checkMissionComplete(Player* player, Stage* stage);

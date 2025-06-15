@@ -1,6 +1,9 @@
 #include "itemManager.h"
+#include "Player.h" 
 #include <random>
 #include <algorithm>
+
+extern Player* player; 
 
 
 bool isExceedTime(const Item& item, std::chrono::steady_clock::time_point now) {
@@ -120,17 +123,25 @@ void itemManager::applyItemEffect(Snake& snake, Map& gameMap, int x, int y,
 
         if (type == "fruit") {
             snake.length++;
+            player->growScore++;
         }
         else if (type == "poison") {
             snake.length--;
+            player->poisonScore++;
         }
         else if (type == "speed") {
             snakeIntervalMs = 250; //250으로 줄이기?
             speedEndTime = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+            player->speedScore++;
         }
         else if (type == "double") {
             snake.length *= 2;
+            player->doubleScore++;
         }
+
+        // 공통적으로 처리
+        player->SetLengthScore(snake.length);
+        player->SetTotalScore(snake.length);  // 총점은 현재 뱀 길이로 정의됨
 
         // 아이템 제거
         DeleteCollisionData(y, x, gameMap);

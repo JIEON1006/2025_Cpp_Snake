@@ -4,6 +4,10 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include "Player.h"
+
+extern Player* player;
+
 
 // 생성자
 Stage::Stage() {
@@ -14,10 +18,13 @@ Stage::Stage() {
 // 소멸자
 Stage::~Stage() {}
 
-// 게임 진행 중 로직 처리 (현재는 비어 있음)
+// 게임 진행 중 로직 처리
 void Stage::Update(float eTime) {
-    // 미션 조건 확인 로직을 여기에 구현 가능
+    if (!clear && checkMissionComplete(player, this)) {
+        clear = true;
+    }
 }
+
 
 // 현재 스테이지 상태 출력 (디버깅용)
 void Stage::Render() {
@@ -29,5 +36,14 @@ void Stage::Render() {
     }
 }
 
+bool checkMissionComplete(Player* player, Stage* stage) {
+    int* mission = stage->getNowMission();
 
+    return player->lengthScore >= mission[0] &&
+           player->growScore   >= mission[1] &&
+           player->poisonScore >= mission[2] &&
+           player->gateScore   >= mission[3] &&
+           player->speedScore  >= mission[4] &&
+           player->doubleScore >= mission[5];
+}
 

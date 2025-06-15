@@ -4,6 +4,11 @@
 #include <ncurses.h>
 #include "screen.h"
 #include <iostream>
+#include "Player.h"
+#include "Stage.h"
+
+extern Player* player;
+extern Stage* stage;
 
 void drawAnimatedBorder(int delay_us = 1500) {
     int height, width;
@@ -129,5 +134,35 @@ void printGameOverScreen(const std::string& cause) {
 
     refresh();
     nodelay(stdscr, FALSE);
+    getch();
+}
+
+void printStageResult(bool success) {
+    clear();
+
+    int width = 60, height = 17;
+    int startY = (LINES - height) / 2;
+    int startX = (COLS - width) / 2;
+
+    attron(A_BOLD | COLOR_PAIR(2));
+
+    std::string title = success ? "🎉 Stage Clear! 🎉" : "💀 Game Over 💀";
+    mvprintw(startY, startX + (width - title.length()) / 2, "%s", title.c_str());
+
+    int* mission = stage->getNowMission();
+
+    mvprintw(startY + 2, startX, "Score Summary:");
+    mvprintw(startY + 3, startX, "B: %d / %d  (%c)", player->lengthScore, mission[0], player->lengthScore >= mission[0] ? 'V' : ' ');
+    mvprintw(startY + 4, startX, "+: %d / %d  (%c)", player->growScore, mission[1], player->growScore >= mission[1] ? 'V' : ' ');
+    mvprintw(startY + 5, startX, "-: %d / %d  (%c)", player->poisonScore, mission[2], player->poisonScore >= mission[2] ? 'V' : ' ');
+    mvprintw(startY + 6, startX, "G: %d / %d  (%c)", player->gateScore, mission[3], player->gateScore >= mission[3] ? 'V' : ' ');
+    mvprintw(startY + 7, startX, "⇈: %d / %d  (%c)", player->speedScore, mission[4], player->speedScore >= mission[4] ? 'V' : ' ');
+    mvprintw(startY + 8, startX, "★: %d / %d  (%c)", player->doubleScore, mission[5], player->doubleScore >= mission[5] ? 'V' : ' ');
+
+    mvprintw(startY + 10, startX, "Total Score: %d", player->totalScore);
+
+    mvprintw(startY + 12, startX + 10, "Press any key to continue...");
+    attroff(A_BOLD | COLOR_PAIR(2));
+    refresh();
     getch();
 }
