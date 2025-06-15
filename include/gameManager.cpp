@@ -22,11 +22,16 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
     itemManager manager;
     Format format;
 
+    char currentKey = 'w';
+    std::string currentArrow = "↑";
+
+
     while (true) {
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count();
 
         int ch = getch();
+
         switch (ch) {
             case 'w': dx = -1; dy = 0; break;
             case 's': dx = 1; dy = 0; break;
@@ -35,6 +40,17 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
             case 'q': return;
             default: break;
         }
+        // 입력된 키 출력 (w/s/a/d 출력, 디버깅용)
+        if (ch == 'w') {
+            currentKey = 'w'; currentArrow = "↑";
+        } else if (ch == 's') {
+            currentKey = 's'; currentArrow = "↓";
+        } else if (ch == 'a') {
+            currentKey = 'a'; currentArrow = "←";
+        } else if (ch == 'd') {
+            currentKey = 'd'; currentArrow = "→";
+        }
+
 
         if (elapsed >= tickIntervalMs) {
 
@@ -122,6 +138,11 @@ void gameTickLoop(Map& gameMap, Snake& snake) {
             eTime = std::chrono::duration<float>(now - startTime).count();
             format.Update(eTime);
             format.Render();
+
+            // 입력된 키 출력
+            move(0, 0);
+            clrtoeol();
+            printw("입력된 키: %c %s", currentKey, currentArrow.c_str());
 
             refresh();
             

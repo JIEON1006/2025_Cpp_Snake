@@ -159,8 +159,6 @@ void printStageResult(bool success) {
     mvprintw(startY + 7, startX, "⇈: %d / %d  (%c)", player->speedScore, mission[4], player->speedScore >= mission[4] ? 'V' : ' ');
     mvprintw(startY + 8, startX, "★: %d / %d  (%c)", player->doubleScore, mission[5], player->doubleScore >= mission[5] ? 'V' : ' ');
 
-    mvprintw(startY + 10, startX, "Total Score: %d", player->totalScore);
-
     mvprintw(startY + 12, startX + 10, "Press any key to continue...");
     attroff(A_BOLD | COLOR_PAIR(2));
     refresh();
