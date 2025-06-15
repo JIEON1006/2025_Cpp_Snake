@@ -100,19 +100,33 @@ std::pair<int, int> findExitDirection(std::pair<int, int> gatePos, const Map& ga
     int x = gatePos.first;
     int y = gatePos.second;
 
-    // 1. 가장자리 Gate → 무조건 맵 안쪽으로
-    if (x == 0) return {1, 0};                      // 상단: 아래로
-    if (x == gameMap.row - 1) return {-1, 0};       // 하단: 위로
-    if (y == 0) return {0, 1};                      // 좌측: 오른쪽으로
-    if (y == gameMap.col - 1) return {0, -1};       // 우측: 왼쪽으로
+    // 가장자리일 경우: 내부 방향 중 유효하고 EMPTY인 방향 선택
+    if (x == 0 || x == gameMap.row - 1 || y == 0 || y == gameMap.col - 1) {
+        std::vector<std::pair<int, int>> edgeDirs;
 
-    // 2. 가운데 Gate
-    if (inDx == 0) {  // 좌우 방향으로 진입했을 때
-        if (inDy == 1 || inDx == -1) return {0, 1};   // 오른쪽, 위 → 오른쪽
-        else return {0, -1};                          // 왼쪽, 아래 → 왼쪽
-    } else {        // 상하 방향으로 진입했을 때
-        if (inDy == 1 || inDx == -1) return {-1, 0};  // 오른쪽, 위 → 위
-        else return {1, 0};                           // 왼쪽, 아래 → 아래
+        if (x == 0) edgeDirs.push_back({1, 0});  // 아래
+        if (x == gameMap.row - 1) edgeDirs.push_back({-1, 0});  // 위
+        if (y == 0) edgeDirs.push_back({0, 1});  // 오른쪽
+        if (y == gameMap.col - 1) edgeDirs.push_back({0, -1});  // 왼쪽
+
+        for (const auto& dir : edgeDirs) {
+            int nx = x + dir.first;
+            int ny = y + dir.second;
+            if (nx >= 0 && nx < gameMap.row && ny >= 0 && ny < gameMap.col &&
+                gameMap.map[nx][ny] == EMPTY) {
+                return dir;
+            }
+        }
+        return {-999, -999};  // 나갈 수 있는 방향 없음
+    }
+
+    // 가운데 Gate일 경우: 규칙 적용
+    if (inDx == 0) { // 좌우 진입
+        return (inDy > 0) ? std::pair<int, int>{0, 1}   // 오른쪽 진입 → 오른쪽
+                          : std::pair<int, int>{0, -1}; // 왼쪽 진입 → 왼쪽
+    } else {         // 상하 진입
+        return (inDx < 0) ? std::pair<int, int>{-1, 0}  // 위 진입 → 위
+                          : std::pair<int, int>{1, 0};  // 아래 진입 → 아래
     }
 }
 
